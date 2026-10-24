@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="nb">
+<meta charset="utf-8">
+<title>PDF-forhåndsvisning (test)</title>
+<body style="background:#666;margin:0;padding:12px;display:flex;flex-direction:column;gap:12px;align-items:center">
+<script type="module">
+  import { Report } from '../src/jobs/report.js';
+  import { drawPage } from '../src/jobs/pdf.js';
+
+  const r = new Report({
+    title: 'Måleprotokoll', subtitle: 'Bad – Storgata 5, 0155 Oslo',
+    meta: [['Kunde', 'Ola Nordmann'], ['Nett', 'TN 400/230 V · Ik3 maks 10 kA · Ik1 min 2,0 kA'], ['Dato', '24.10.2026']],
+    footer: 'Elverktøy 0.1.0 · hjelpemiddel, kontroller mot NEK 400:2026',
+  });
+  r.heading('Kurser');
+  r.table({
+    columns: [{ title: 'Kurs', width: 1 }, { title: 'Beskrivelse', width: 4 }, { title: 'Isolasjon MΩ', width: 1.6, align: 'right' }, { title: 'R1+R2 Ω', width: 1.4, align: 'right' }, { title: 'Ik A', width: 1.2, align: 'right' }, { title: 'Status', width: 1, status: true }],
+    rows: Array.from({ length: 45 }, (_, i) => [String(i + 1), i % 7 === 0 ? 'Stikkontakter stue, lang beskrivelse som må brytes over flere linjer i cellen' : 'Lys kjøkken', '> 299', '0,58', String(320 + i), i % 9 === 4 ? 'fail' : i % 11 === 3 ? 'border' : 'ok']),
+  });
+  r.heading('Sluttkontroll');
+  r.checklist([
+    { status: 'ok', text: 'Kontinuitet i beskyttelsesledere og utjevningsforbindelser' },
+    { status: 'fail', text: 'Isolasjonsresistans ≥ 1 MΩ ved 500 V DC', note: 'Kurs 5 under grensen, utbedres' },
+    { status: 'na', text: 'Fasefølge' },
+    { status: null, text: 'Funksjonsprøving av komfyrvakt' },
+  ]);
+  r.para('Formeltest: ΔU = 2·I·L·(R·cos φ + X·sin φ) ≤ 4 %, R = 7,41 Ω/km, √3 · 230 V, θ = 70 °C, µF, ± 5 %, Ik₂ min ≥ 160 A, «sitat» – æøå ÆØÅ.');
+  r.signatures(['Sted og dato', 'Signatur installatør']);
+  const bytes = r.finish();
+
+  const saved = [];
+  for (const [i, page] of r.doc.pages.entries()) {
+    const c = document.createElement('canvas');
+    const s = 1.4;
+    c.width = 595.28 * s; c.height = 841.89 * s;
+    c.style.width = '595px';
+    drawPage(c.getContext('2d'), page, s);
+    document.body.append(c);
+    // Lagres via utviklingsserveren (dist/preview), så forhåndsvisningen kan åpnes som bilde.
+    const blob = await new Promise((res) => c.toBlob(res, 'image/png'));
+    const res = await fetch(`/__dev/save?file=dist/preview/side-${i + 1}.png`, { method: 'POST', body: blob });
+    saved.push(res.status);
+  }
+  window.__pdf = { pages: r.doc.pages.length, bytes: bytes.length, saved };
+</script>
+</body>
+</html>

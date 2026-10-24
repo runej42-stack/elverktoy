@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="RHJ, Rune Johansen">
+  <defs>
+    <linearGradient id="rhj-c-bg-m" x1="0" y1="0" x2="0" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1b2b33"/>
+      <stop offset="1" stop-color="#111b21"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#rhj-c-bg-m)"/>
+  <g transform="translate(64 64) scale(1.5)">
+    <path fill="#ffc83d" fill-rule="evenodd" d="M128 10A118 118 0 0 1 128 246A118 118 0 0 1 128 10ZM128 22A106 106 0 0 0 128 234A106 106 0 0 0 128 22Z"/>
+    <path fill="#e8ecee" fill-rule="evenodd" d="M53 72H76A26 26 0 0 1 86 122L109 168H91L69 124V168H53ZM69 88V108H76A10 10 0 0 0 76 88ZM121 72H137V108H155V72H171V168H155V124H137V168H121ZM187 72H203V170A26 26 0 0 1 177 196H155V180H177A10 10 0 0 0 187 170Z"/>
+  </g>
+</svg>

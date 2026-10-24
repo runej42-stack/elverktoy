@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="nb">
+<meta charset="utf-8">
+<title>Lag ikoner</title>
+<body style="font-family: system-ui; background: #333; color: #eee">
+<p>Lager PNG-ikoner fra merkevareprofilene og lagrer dem i icons/&lt;profil&gt;/ via utviklingsserveren.</p>
+<div id="preview" style="display: flex; gap: 12px; flex-wrap: wrap"></div>
+<pre id="log"></pre>
+<script type="module">
+  import { brand as rhj } from '../src/brand/rhj.js';
+  import { brand as noytral } from '../src/brand/noytral.js';
+
+  const log = (s) => { document.getElementById('log').textContent += s + '\n'; };
+
+  async function render(svg, size) {
+    const sized = svg.replace('<svg ', `<svg width="${size}" height="${size}" `);
+    const img = new Image();
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(sized);
+    await img.decode();
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = size;
+    canvas.getContext('2d').drawImage(img, 0, 0, size, size);
+    return new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+  }
+
+  try {
+    // ?brand=rhj lager bare ikonene for den profilen.
+    const only = new URLSearchParams(location.search).get('brand');
+    for (const b of [rhj, noytral].filter((p) => !only || p.id === only)) {
+      const jobs = [
+        ['icon-512', b.icon, 512],
+        ['icon-192', b.icon, 192],
+        ['maskable-512', b.iconMaskable, 512],
+        ['apple-touch-icon', b.iconMaskable, 180],
+      ];
+      for (const [name, svg, size] of jobs) {
+        const blob = await render(svg, size);
+        const res = await fetch(`/__dev/save?file=icons/${b.id}/${name}.png`, { method: 'POST', body: blob });
+        log(`${b.id}/${name}.png: ${res.status} (${blob.size} byte)`);
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(blob);
+        img.width = 96;
+        img.title = `${b.id}/${name}`;
+        document.getElementById('preview').append(img);
+      }
+    }
+    log('Ferdig');
+    window.__iconsDone = 'ok';
+  } catch (e) {
+    log('Feil: ' + e.message);
+    window.__iconsDone = 'feil: ' + e.message;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="RHJ">
+  <defs>
+    <linearGradient id="rhjBMask" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f6e7a"/>
+      <stop offset="1" stop-color="#24555e"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#rhjBMask)"/>
+  <path fill="#ffc83d" d="M300 206.5H355V245H300Z"/>
+  <path fill="#fbfaf7" fill-rule="evenodd" d="M124 124H190A55 55 0 0 1 245 179V190A55 55 0 0 1 190 245H173.5L245 388H201L162.5 311V388H124ZM162.5 162.5V206.5H190A16.5 16.5 0 0 0 206.5 190V179A16.5 16.5 0 0 0 190 162.5Z"/>
+  <path fill="#fbfaf7" d="M267 124H305.5V327.5H267Z"/>
+  <path fill="#fbfaf7" d="M349.5 124H388V333A55 55 0 0 1 333 388H267V349.5H333A16.5 16.5 0 0 0 349.5 333Z"/>
+</svg>

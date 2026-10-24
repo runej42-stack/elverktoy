@@ -1,0 +1,16 @@
+{
+  "name": "Elverktøy",
+  "short_name": "Elverktøy",
+  "description": "Kalkulatorer, oppslag og dokumentasjon for elektrikere.",
+  "lang": "nb",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f141a",
+  "theme_color": "#0f141a",
+  "icons": [
+    { "src": "icons/noytral/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/noytral/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/noytral/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

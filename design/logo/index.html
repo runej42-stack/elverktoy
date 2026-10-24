@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logoforslag RHJ</title>
+<style>
+  :root { --blekk: #16232a; --papir: #e8ecee; --kort: #fbfaf7; --app: #0f141a; --flate: #18202a; --gul: #ffc83d; --petrol: #2b6570; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, sans-serif; background: var(--papir); color: var(--blekk); }
+  header { padding: 20px 16px 4px; max-width: 1100px; margin: 0 auto; }
+  h1 { margin: 0 0 4px; font-size: 1.5rem; }
+  .lead { margin: 0; color: #5c6d75; }
+  main { max-width: 1100px; margin: 0 auto; padding: 8px 16px 40px; display: grid; gap: 20px; }
+  .variant { background: var(--kort); border: 1px solid #ccd7db; border-radius: 18px; padding: 18px; }
+  .variant h2 { margin: 0 0 4px; font-size: 1.25rem; }
+  .notes { color: #3c4d55; font-size: .92rem; white-space: pre-wrap; margin: 6px 0 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .panel { border-radius: 14px; padding: 14px; }
+  .panel h3 { margin: 0 0 10px; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; opacity: .75; }
+  .light { background: #fff; border: 1px solid #dde4e6; color: var(--blekk); }
+  .paper { background: var(--papir); color: var(--blekk); }
+  .dark { background: var(--app); color: #eef2f6; }
+  .sizes { display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; }
+  .sizes span { display: inline-grid; }
+  .sizes svg { display: block; }
+  .acc { color: var(--gul); }
+  .pet { color: var(--petrol); }
+  .icons { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+  .icons img { display: block; }
+  .mask { position: relative; width: 120px; height: 120px; border-radius: 50%; overflow: hidden; }
+  .mask img { width: 120px; height: 120px; }
+  .safe { position: relative; width: 120px; height: 120px; }
+  .safe img { width: 120px; height: 120px; }
+  .safe::after { content: ""; position: absolute; left: 12px; top: 12px; width: 96px; height: 96px; border: 1.5px dashed #ff3d7f; border-radius: 50%; }
+  .appbar { display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 14px; border-radius: 12px; }
+  .appbar .m { width: 28px; height: 28px; display: grid; }
+  .appbar .m svg { width: 100%; height: 100%; }
+  .appbar b { font-size: 1.15rem; }
+  .badge { font-size: .7rem; font-weight: 800; padding: 1px 8px; border-radius: 99px; background: var(--gul); color: #1a1a1a; }
+  .tab { display: inline-flex; align-items: center; gap: 8px; background: #dfe3e8; border-radius: 10px 10px 0 0; padding: 8px 12px; font-size: .85rem; }
+  .tab img { width: 16px; height: 16px; }
+  .home { display: grid; grid-template-columns: repeat(4, 60px); gap: 18px 14px; padding: 16px; border-radius: 16px; background: linear-gradient(160deg, #3a4a7a, #1d2440); }
+  .home div { display: grid; justify-items: center; gap: 4px; color: #fff; font-size: .68rem; }
+  .home img, .home .fake { width: 60px; height: 60px; border-radius: 14px; display: block; }
+  .missing { color: #a33; }
+  .big { width: 100%; max-width: 220px; }
+  .big svg { width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Logoforslag RHJ</h1>
+  <p class="lead">Tre forslag til merke og app-ikon. Se særlig på de små størrelsene: slik ser merket ut i appen og i nettleserfanen.</p>
+</header>
+<main id="list"></main>
+<script type="module">
+  const VARIANTS = [
+    { id: 'a-stromvei', title: 'A – Strømvei' },
+    { id: 'b-blokk', title: 'B – Kraftig monogram' },
+    { id: 'c-stempel', title: 'C – Håndverksstempel' },
+  ];
+  // ?v=b viser bare forslag B.
+  const only = new URLSearchParams(location.search).get('v');
+  if (only) VARIANTS.splice(0, VARIANTS.length, ...VARIANTS.filter((x) => x.id.startsWith(only)));
+  const list = document.getElementById('list');
+  const get = async (url) => { const r = await fetch(url, { cache: 'no-store' }); if (!r.ok) throw new Error(url); return r.text(); };
+  const sized = (svg, px) => svg.replace(/<svg\b/, `<svg width="${px}" height="${px}"`);
+  const el = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
+
+  for (const v of VARIANTS) {
+    const base = `./${v.id}/`;
+    const box = el(`<section class="variant"><h2>${v.title}</h2></section>`);
+    list.append(box);
+    try {
+      const [mark, color, notes] = await Promise.all([get(base + 'mark.svg'), get(base + 'mark-color.svg').catch(() => ''), get(base + 'notes.md').catch(() => '')]);
+      const sizes = (cls) => `<div class="sizes ${cls}">${[16, 24, 32, 48, 96].map((s) => `<span>${sized(mark, s)}</span>`).join('')}</div>`;
+      const esc = (s) => s.replace(/[<&]/g, (c) => (c === '<' ? '&lt;' : '&amp;'));
+      // Første avsnitt etter «Idéen» vises, resten ligger under «Mer om forslaget».
+      const m = notes.match(/^##[^\n]*Id[ée][^\n]*\n([\s\S]*?)(?=^##|$(?![\s\S]))/mi);
+      const idea = ((m ? m[1] : notes).split(/\n\s*\n/).map((s) => s.trim()).find((s) => s && !s.startsWith('#'))) || '';
+      box.append(el(`<p class="notes">${esc(idea)}</p>`));
+      box.append(el(`<details class="notes"><summary>Mer om forslaget</summary>${esc(notes)}</details>`));
+      const grid = el('<div class="grid"></div>');
+      grid.append(el(`<div class="panel light"><h3>Merket på hvitt</h3>${sizes('')}</div>`));
+      grid.append(el(`<div class="panel dark"><h3>Merket på mørkt (appen)</h3>${sizes('acc')}</div>`));
+      grid.append(el(`<div class="panel paper"><h3>Nettsiden (petrol)</h3>${sizes('pet')}</div>`));
+      if (color) grid.append(el(`<div class="panel light"><h3>Merket i farger</h3><div class="big">${color}</div></div>`));
+      grid.append(el(`<div class="panel dark"><h3>Toppfeltet i appen</h3><div class="appbar dark"><span class="m acc">${mark}</span><b>Elverktøy</b><span class="badge">Beta</span></div><div class="appbar light" style="margin-top:10px"><span class="m" style="color:#8a5d00">${mark}</span><b>Elverktøy</b><span class="badge">Beta</span></div></div>`));
+      grid.append(el(`<div class="panel light"><h3>App-ikon</h3><div class="icons"><img src="${base}icon.svg" width="180" height="180" alt=""><img src="${base}icon.svg" width="60" height="60" alt=""><img src="${base}icon.svg" width="32" height="32" alt=""></div><p style="margin:12px 0 4px"><span class="tab"><img src="${base}icon.svg" alt="">Elverktøy</span></p></div>`));
+      grid.append(el(`<div class="panel light"><h3>Maskerbart ikon (Android)</h3><div class="icons"><div class="safe"><img src="${base}icon-maskable.svg" alt=""></div><div class="mask"><img src="${base}icon-maskable.svg" alt=""></div></div><p style="font-size:.8rem;color:#5c6d75">Stiplet sirkel: alt viktig må ligge innenfor.</p></div>`));
+      grid.append(el(`<div class="panel"><h3>Hjem-skjerm</h3><div class="home"><div><span class="fake" style="background:#e94b3c"></span>Kamera</div><div><img src="${base}icon.svg" alt="">Elverktøy</div><div><span class="fake" style="background:#2fa84f"></span>Kart</div><div><span class="fake" style="background:#f4f4f4"></span>Kalender</div></div></div>`));
+      box.append(grid);
+    } catch (e) {
+      box.append(el(`<p class="missing">Forslaget er ikke ferdig ennå (${e.message}).</p>`));
+    }
+  }
+</script>
+</body>
+</html>

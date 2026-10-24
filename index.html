@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0f141a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Elverktøy">
+<meta name="format-detection" content="telephone=no">
+<meta name="description" content="Kalkulatorer, oppslag og dokumentasjon for elektrikere.">
+<title>Elverktøy</title>
+<!--build:links--><link rel="manifest" href="manifest.webmanifest"><link rel="icon" type="image/png" href="icons/noytral/icon-192.png"><link rel="apple-touch-icon" href="icons/noytral/apple-touch-icon.png"><!--/build:links-->
+<!--build:css--><link rel="stylesheet" href="css/app.css"><!--/build:css-->
+<script>
+  // Sett temaet før første tegning, så skjermen ikke blinker.
+  try {
+    var s = JSON.parse(localStorage.getItem('elverktoy:settings') || '{}');
+    var t = s.theme || 'auto';
+    if (t === 'auto') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.dataset.theme = t;
+    if (s.glove) document.documentElement.classList.add('glove');
+  } catch (e) {
+    document.documentElement.dataset.theme = 'dark';
+  }
+</script>
+</head>
+<body>
+<div id="app"></div>
+<noscript>Denne appen trenger JavaScript.</noscript>
+<!--build:js--><script type="module" src="src/main.js"></script><!--/build:js-->
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "elverktoy",
+  "version": "0.2.2",
+  "private": true,
+  "description": "Kalkulatorer og oppslag for norske elektrikere. PWA uten avhengigheter.",
+  "type": "module",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "test": "node --test",
+    "build": "node tools/build.mjs",
+    "publiser": "node tools/deploy.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

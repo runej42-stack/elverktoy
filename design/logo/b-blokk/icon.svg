@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="RHJ">
+  <defs>
+    <linearGradient id="rhjBIcon" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f6e7a"/>
+      <stop offset="1" stop-color="#24555e"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#rhjBIcon)"/>
+  <path fill="#ffc83d" d="M312 193H382V242H312Z"/>
+  <path fill="#fbfaf7" fill-rule="evenodd" d="M88 88H172A70 70 0 0 1 242 158V172A70 70 0 0 1 172 242H151L242 424H186L137 326V424H88ZM137 137V193H172A21 21 0 0 0 193 172V158A21 21 0 0 0 172 137Z"/>
+  <path fill="#fbfaf7" d="M270 88H319V347H270Z"/>
+  <path fill="#fbfaf7" d="M375 88H424V354A70 70 0 0 1 354 424H270V375H354A21 21 0 0 0 375 354Z"/>
+</svg>
